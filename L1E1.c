@@ -41,18 +41,20 @@ int main() {
 
     printf("Keystream: ");
     for (int i = 1; i <= n; i++) {
-        // Calculate keystream bit
+        // Convert from ASCII to binary
         int x18 = (int) x[18] - 48;
         int y21 = (int) y[21] - 48;
         int z22 = (int) z[22] - 48;
+
+        // Calculate keystream bit
         printf("%d", x18 ^ y21 ^ z22);
 
         // Shift
         if (x[8] == y[10]) {
-            shiftX();
-            shiftY();
             if (x[8] == z[10])
                 shiftZ();
+            shiftX();
+            shiftY();
         }
         else if (x[8] == z[10]) {
             shiftX();
