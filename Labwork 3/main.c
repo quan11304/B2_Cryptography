@@ -26,33 +26,55 @@ int main() {
     // p and q is prime
     // e is relatively prime to (p-1)(q-1)
     char choice1, choice2;
+
     printf("p = ");
     scanf("%d", &p);
     printf("q = ");
     scanf("%d", &q);
     fflush(stdin);
+
     int verify = 0;
     do {
         printf("Choose encryption (e) or decryption (d) exponent: ");
-        scanf("%c", choice1);
-        printf("%c", choice1);
+        scanf("%c", &choice1);
         switch (choice1) {
             case 'e':
             case 'E':
                 printf("e = ");
+                scanf("%d",&e);
                 break;
             case 'd':
             case 'D':
                 printf("d = ");
+                scanf("%d",&d);
                 break;
             default:
+                printf("Please choose between 'e' and 'd'.");
                 verify = 1;
         }
     } while (verify);
-    printf("p = ");
-    scanf("%d", &p);
-    printf("p = ");
-    scanf("%d", &p);
-    printf("p = ");
-    scanf("%d", &p);
+
+    do {
+        printf("Choose encryption or decryption process: ");
+        scanf("%c", &choice2);
+        switch (choice1) {
+            case 'e':
+            case 'E':
+            case 'm':
+            case 'M':
+                printf("M = ");
+                scanf("%d",&m);
+                break;
+            case 'd':
+            case 'D':
+            case 'c':
+            case 'C':
+                printf("d = ");
+                scanf("%d",&c);
+                break;
+            default:
+                printf("Please choose between 'e' (or 'M') and 'd' (or 'C').");
+                verify = 1;
+        }
+    } while (verify);
 }
