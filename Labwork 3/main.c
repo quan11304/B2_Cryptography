@@ -23,7 +23,7 @@ int modulus(int m, int e, int n) {
 
 int modMulInv(int e, int m) {
     // Output d so that (e*d) % m = 1
-    for (int d = 0; d < m; d++) {
+    for (int d = 1; d < m; d++) {
         if ((e * d) % m == 1)
             return d;
     }
@@ -36,13 +36,13 @@ int main() {
     // e is relatively prime to (p-1)(q-1)
     char choice1, choice2;
 
-    int verify = 0;
+    int verify = 1;
     while (1) {
         printf("p = ");
         scanf("%d", &p);
         printf("q = ");
         scanf("%d", &q);
-        fflush(stdin);
+        getchar(); // Consumes the line break in the buffer
 
         do {
             printf("Choose encryption (e) or decryption (d) exponent: ");
@@ -53,44 +53,68 @@ int main() {
                     printf("e = ");
                     scanf("%d", &e);
                     d = modMulInv(e, (p - 1) * (q - 1));
+                    printf("d = %d\n",d);
+                    verify = 0;
                     break;
                 case 'd':
                 case 'D':
                     printf("d = ");
                     scanf("%d", &d);
                     e = modMulInv(d, (p - 1) * (q - 1));
+                    printf("e = %d\n",e);
+                    verify = 0;
                     break;
                 default:
-                    printf("Please choose between 'e' and 'd'.");
-                    verify = 1;
+                    printf("Please choose between 'e' and 'd'.\n");
             }
         } while (verify);
 
         if (e == 0 || d == 0)
+            printf("e is not relatively prime to (p-1)(q-1)");
+        else
             break;
     }
 
+    getchar(); // Consumes the line break in the buffer
+    verify = 1;
     do {
         printf("Choose encryption or decryption process: ");
         scanf("%c", &choice2);
-        switch (choice1) {
+        switch (choice2) {
             case 'e':
             case 'E':
             case 'm':
             case 'M':
                 printf("M = ");
                 scanf("%d", &m);
+
+                printf("Encrypting...\n");
+                c = modulus(m,e,p*q);
+                printf("Ciphertext (C): %d\n",c);
+                printf("Decrypting...\n");
+                printf("Plaintext (M): %d\n", modulus(c,d,p*q));
+
+                verify = 0;
                 break;
+
             case 'd':
             case 'D':
             case 'c':
             case 'C':
-                printf("d = ");
+                printf("C = ");
                 scanf("%d", &c);
+
+                printf("Decrypting...\n");
+                m = modulus(c,d,p*q);
+                printf("Plaintext (M): %d\n", m);
+                printf("Encrypting...\n");
+                printf("Ciphertext (C): %d\n",modulus(m,e,p*q));
+
+                verify = 0;
                 break;
+
             default:
-                printf("Please choose between 'e' (or 'M') and 'd' (or 'C').");
-                verify = 1;
+                printf("Please choose between 'e' (or 'M') and 'd' (or 'C').\n");
         }
     } while (verify);
 }
