@@ -1,18 +1,18 @@
 #include <stdio.h>
 #include <math.h>
 
-int modulus(int m, int e, int n) {
-    // m is base, e is exponent, n is modulus
+int modulus(int m, int d, int n) {
+    // m is base, d is exponent, n is modulus
 
     int rm = m; // Return value
 
-    for (int i = 1 << ((int) log2(e) - 1); i > 0; i >>= 1) {
+    for (int i = 1 << ((int) log2(d) - 1); i > 0; i >>= 1) {
         // Set i to 2^(length-1) and divide it by 2 every loop
-        // (int) log2(e) returns the length (base 0) of the binary representation of e
-        // Length (base 0, i.e. start counting from 0) = Length + 1 (in base 1)
+        // (int) log2(d) returns the length (base 0) of the binary representation of d
+        // Length (base 0, i.d. start counting from 0) = Length + 1 (in base 1)
         rm *= rm;
         rm %= n;
-        if (e & i) { // Checking if the current bit in the exponent is a 1 or not
+        if (d & i) { // Checking if the current bit in the exponent is a 1 or not
             rm *= m;
             rm %= n;
         }
@@ -45,7 +45,7 @@ int main() {
         getchar(); // Consumes the line break in the buffer
 
         do {
-            printf("Choose encryption (e) or decryption (d) exponent: ");
+            printf("Choose public key (e) or private key (d): ");
             scanf("%c", &choice1);
             switch (choice1) {
                 case 'e':
@@ -89,10 +89,11 @@ int main() {
                 scanf("%d", &m);
 
                 printf("Encrypting...\n");
-                c = modulus(m,e,p*q);
+                c = modulus(m,d,p*q);
+                // d = private key
                 printf("Ciphertext (C): %d\n",c);
                 printf("Decrypting...\n");
-                printf("Plaintext (M): %d\n", modulus(c,d,p*q));
+                printf("Plaintext (M): %d\n", modulus(c,e,p*q));
 
                 verify = 0;
                 break;
@@ -105,10 +106,11 @@ int main() {
                 scanf("%d", &c);
 
                 printf("Decrypting...\n");
-                m = modulus(c,d,p*q);
+                m = modulus(c,e,p*q);
+                // e = public key
                 printf("Plaintext (M): %d\n", m);
                 printf("Encrypting...\n");
-                printf("Ciphertext (C): %d\n",modulus(m,e,p*q));
+                printf("Ciphertext (C): %d\n",modulus(m,d,p*q));
 
                 verify = 0;
                 break;
