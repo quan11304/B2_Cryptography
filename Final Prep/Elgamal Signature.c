@@ -42,8 +42,13 @@ int main() {
     // Public key
     int p = 13; // A large prime number
     int a = 5; // Primitive element of Galois field (?)
+
     int b = modulus(a, d, p);
     printf("b = %d\n",b);
+
+
+    // Signing process
+    printf("\nSigning...\n");
 
     // Modular multiplicative inverse of the ephemeral key
     int kE_1 = modMulInv(kE, p - 1);
@@ -58,4 +63,16 @@ int main() {
     printf("r = %d\n",r);
     int s = ((x - d * r) * kE_1) % (p - 1);
     printf("s = %d\n",s);
+
+
+    // Verifying process
+    printf("\nVerifying...\n");
+
+    int t = modulus(b,r,p) * modulus(r,s,p);
+    t %= p;
+    printf("t = %d\n",t);
+    if (t == modulus(a,x,p))
+        printf("Valid signature.\n");
+    else
+        printf("***INVALID signature.***\n");
 }
