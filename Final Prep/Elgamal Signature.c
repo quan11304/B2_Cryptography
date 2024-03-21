@@ -20,18 +20,42 @@ int modulus(int b, int e, int m) {
     return result;
 }
 
+int modMulInv(int e, int m) {
+    // Modular Multiplicative Inverse
+    // Output d so that (e*d) % m = 1
+    for (int d = 1; d < m; d++) {
+        if ((e * d) % m == 1)
+            return d;
+    }
+    return 0;
+    // If e and m not being relatively prime, the inverse won't be found and set to 0
+}
+
 int main() {
-    int p, a, b; // Public key
-    // p is prime
-    printf("p = ");
-    scanf("%d", &p);
-    printf("a = ");
-    scanf("%d", &a);
+    // Message
+    int x = 12938;
 
-    int d; // Private key
-    // Chosen from 2 to p-2
-    printf("d = ");
-    scanf("%d", &d);
+    // Private key
+    int d = 4; // Chosen between 2 and p-2
+    int kE = 6; // Ephemeral key, chosen from 0 to p-2, relatively prime to p
 
-    b = modulus(a,d,p);
+    // Public key
+    int p = 13; // A large prime number
+    int a = 5; // Primitive element of Galois field (?)
+    int b = modulus(a, d, p);
+    printf("b = %d\n",b);
+
+    // Modular multiplicative inverse of the ephemeral key
+    int kE_1 = modMulInv(kE, p - 1);
+    printf("kE_1 = %d\n",kE_1);
+    if (kE_1 == 0) {
+        printf("kE and (p-1) are not relatively prime. Exiting...");
+        return 1;
+    }
+
+    // Signature parameters
+    int r = modulus(a, kE, p);
+    printf("r = %d\n",r);
+    int s = ((x - d * r) * kE_1) % (p - 1);
+    printf("s = %d\n",s);
 }
