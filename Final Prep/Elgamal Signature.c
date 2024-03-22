@@ -4,17 +4,24 @@
 int modulus(int b, int e, int m) {
     // b is base, e is exponent, m is modulus
 
-    int result = b; // Return value
+    int result; // Return value
 
-    for (int i = 1 << ((int) log2(e) - 1); i > 0; i >>= 1) {
-        // Set i to 2^(length-1) and divide it by 2 every loop
-        // (int) log2(e) returns the length (base 0) of the binary representation of e
-        // Length (base 0, i.e. start counting from 0) = Length + 1 (in base 1)
-        result *= result;
-        result %= m;
-        if (e & i) { // Checking if the current bit in the exponent is a 1 or not
-            result *= b;
+    if (e == 0) {
+        result = 1;
+    } else if (e == 1) {
+        result = b % m;
+    } else {
+        result = b;
+        for (int i = 1 << ((int) log2(e) - 1); i > 0; i >>= 1) {
+            // Set i to 2^(length-1) and divide it by 2 every loop
+            // (int) log2(e) returns the length (base 0) of the binary representation of e
+            // Length (base 0, i.e. start counting from 0) = Length + 1 (in base 1)
+            result *= result;
             result %= m;
+            if (e & i) { // Checking if the current bit in the exponent is a 1 or not
+                result *= b;
+                result %= m;
+            }
         }
     }
     return result;
