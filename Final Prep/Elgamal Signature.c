@@ -41,14 +41,26 @@ int modMulInv(int e, int m) {
 int main() {
     // Message
     int x = 12938;
+    printf("Message: x = ");
+    scanf("%d",&x);
 
     // Private key
     int d = 4; // Chosen between 2 and p-2
     int kE = 6; // Ephemeral key, chosen from 0 to p-2, relatively prime to p
+    printf("Private key: d = ");
+    scanf("%d",&d);
+    printf("Ephemeral key: kE = ");
+    scanf("%d",&kE);
 
     // Public key
+    printf("Public key: \n");
     int p = 13; // A large prime number
     int a = 5; // Primitive element of Galois field (?)
+    printf("p = ");
+    scanf("%d",&p);
+    printf("a = ");
+    scanf("%d",&a);
+
 
     int b = modulus(a, d, p);
     printf("b = %d\n",b);
